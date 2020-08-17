@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="format-detection" content="telephone=no,email=no" />
+    <meta name="description" content="ToteaForm" />
+    <meta name="keywords" content="ToteaForm" />
+    <meta name="robots" content="index,follow" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="full-screen" content="yes" />
+    <meta name="browsermode" content="application" />
+    <meta name="x5-orientation" content="portrait" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="x5-page-mode" content="app" />
+    <title>ToteaForm</title>
+    <link href="https://cdn.jsdelivr.net/npm/element-ui@2.10.0/lib/theme-chalk/index.css" rel="stylesheet" />
+    <style>
+      #app{
+        width: 1024px;
+        margin: 0 auto;
+        margin-top: 30px;
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <totea-form
+        v-model="form"
+        :schema="schema"
+        :rules="rules"
+        action="post"
+        base-url="http://localhost:3000"
+        @comfirm="onComfirm"
+      >
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.10.0/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/totea@1.11.1/dist/totea-types.js"></script>
+    <script src="../dist/totea-form.js"></script>
+    <script>
+      const group = new toteaTypes.ToteaGroup({
+        ...toteaTypes.baseMixin,
+        name: toteaTypes.shortText("标题").required(),
+        summary: toteaTypes.text("简介").required(),
+        detail: toteaTypes.longText("文章详情").required(),
+        category: toteaTypes
+          .ref("category", "分类")
+          .required()
+          .formType("category"),
+        auther: toteaTypes
+          .ref("admin", "作者")
+          .refFilter({ role: 1 }, "只有文章发布员才能新建文章")
+          .forbidUpdate()
+          .required(),
+        keyword: toteaTypes.array(String, "关键词"),
+        tag: toteaTypes.ids("tag", "标签").min(1),
+        readNum: toteaTypes
+          .int("阅读数")
+          .forbidCreate()
+          .default(0),
+        starNum: toteaTypes
+          .int("点赞数")
+          .forbidCreate()
+          .default(0),
+        hot: toteaTypes.int("文章热度").computed((doc) => doc.starNum * 5 + doc.readNum),
+        isForbid: toteaTypes
+          .boolean("已禁用")
+          .forbidCreate()
+          .default(false),
+        top: toteaTypes
+          .int("置顶等级")
+          .max(10)
+          .default(0),
+        email: toteaTypes.email(),
+      });
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            form: {},
+            schema: group.createFormSchema,
+            rules: group.toElementRules(),
+          };
+        },
+        methods: {
+          handleChange() {
+            console.log("handleChange");
+          },
+          onComfirm(value) {
+            console.log("comfirm", value);
+          },
+        },
+        created() {},
+      });
+    </script>
+  </body>
+</html>

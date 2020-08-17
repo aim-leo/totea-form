@@ -1,0 +1,44 @@
+{
+  "name": "totea-form",
+  "version": "0.0.1",
+  "description": "a easy way to generate form by schema",
+  "main": "dist/totea-form.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "node_modules/webpack/bin/webpack.js --config webpack.config.js --mode production"
+  },
+  "keywords": [
+    "totea-form",
+    "schema-form"
+  ],
+  "author": "aim-leo",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^4.2.1",
+    "eslint": "^7.6.0",
+    "less-loader": "^6.2.0",
+    "pug": "^3.0.0",
+    "pug-plain-loader": "^1.0.0",
+    "style-loader": "^1.2.1",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "core-js": "^3.6.5",
+    "lodash.get": "^4.4.2",
+    "lodash.has": "^4.5.2",
+    "lodash.set": "^4.3.2"
+  }
+}
